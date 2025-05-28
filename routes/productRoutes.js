@@ -1,39 +1,34 @@
 const express = require('express');
 const router = express.Router();
+const Product = require('../models/product');
 
-const products = {
-  women: {
-    ethnicwear: [
-      { id: 1, name: "Women's Saree", price: 49.99 },
-      { id: 2, name: "Women's Salwar Kameez", price: 59.99 }
-    ],
-    tops: [
-      { id: 3, name: "Women's Top", price: 19.99 }
-    ]
-  },
-  men: {
-    shirts: [
-      { id: 4, name: "Men's Shirt", price: 25.99 }
-    ]
+
+// GET all products
+router.get('/', async (req, res) => {
+  try {
+    const products = await Product.find();
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
-};
+});
 
-// Route: /api/products/:category/:subcategory
-router.get('/:category/:subcategory', (req, res) => {
-  console.log('Request params:', req.params);
-  const category = req.params.category.toLowerCase();
-  const subcategory = req.params.subcategory.toLowerCase();
+// POST a new product
+router.post('/', async (req, res) => {
+  const product = new Product({
+    name: req.body.name,
+    price: req.body.price,
+    description: req.body.description,
+    category: req.body.category,
+    stock: req.body.stock,
+  });
 
-  if (!products[category]) {
-    return res.status(404).json({ message: 'Category not found' });
+  try {
+    const newProduct = await product.save();
+    res.status(201).json(newProduct);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
   }
-
-  const subProducts = products[category][subcategory];
-  if (!subProducts) {
-    return res.status(404).json({ message: 'Subcategory not found' });
-  }
-
-  res.json(subProducts);
 });
 
 module.exports = router;
