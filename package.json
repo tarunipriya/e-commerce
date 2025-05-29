@@ -1,31 +1,23 @@
 {
-<<<<<<< HEAD
   "name": "ecommerce-backend",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-=======
-  "name": "backend",
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
->>>>>>> e24435ed9c7d5d4281665a55e4003cc156b8d010
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
-<<<<<<< HEAD
     "bcryptjs": "^3.0.2",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "mongoose": "^8.15.1"
-=======
-    "express": "^5.1.0"
->>>>>>> e24435ed9c7d5d4281665a55e4003cc156b8d010
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
   }
 }

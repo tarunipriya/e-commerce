@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // Load environment variables
 require('dotenv').config();
 
@@ -12,15 +11,15 @@ const app = express();
 // Use environment PORT or default to 5000
 const PORT = process.env.PORT || 5000;
 
+// Middleware to parse JSON bodies
+app.use(express.json());
+
 // Connect to MongoDB and start server
 const startServer = async () => {
   try {
     // Connect to MongoDB
     await connectDB();
-    console.log('MongoDB connected successfully');
-
-    // Middleware to parse JSON bodies
-    app.use(express.json());
+    console.log('✅ MongoDB connected successfully');
 
     // User authentication routes
     const userRoutes = require('./routes/users');
@@ -34,7 +33,7 @@ const startServer = async () => {
       console.warn('⚠️ No productRoutes found. Skipping...');
     }
 
-    // Test route to confirm server is working
+    // Home route
     app.get('/', (req, res) => {
       res.send('🚀 API is running!');
     });
@@ -51,26 +50,3 @@ const startServer = async () => {
 
 // Run the server
 startServer();
-=======
-const express = require('express');
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-// Middleware to parse JSON
-app.use(express.json());
-
-// Import product routes
-const productRoutes = require('./routes/productRoutes');
-
-// Use product routes
-app.use('/api/products', productRoutes);
-
-// Home route
-app.get('/', (req, res) => {
-  res.send('Backend is running!');
-});
-
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
->>>>>>> e24435ed9c7d5d4281665a55e4003cc156b8d010
