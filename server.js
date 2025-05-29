@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // Load environment variables
 require('dotenv').config();
 
@@ -50,3 +51,26 @@ const startServer = async () => {
 
 // Run the server
 startServer();
+=======
+const express = require('express');
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Middleware to parse JSON
+app.use(express.json());
+
+// Import product routes
+const productRoutes = require('./routes/productRoutes');
+
+// Use product routes
+app.use('/api/products', productRoutes);
+
+// Home route
+app.get('/', (req, res) => {
+  res.send('Backend is running!');
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+>>>>>>> e24435ed9c7d5d4281665a55e4003cc156b8d010
