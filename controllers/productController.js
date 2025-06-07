@@ -1,6 +1,6 @@
-const Product = require('../models/product');
+const Product = require('../models/Product');
 
-// GET all products
+// ✅ GET all products
 const getAllProducts = async (req, res) => {
   try {
     const products = await Product.find();
@@ -10,14 +10,42 @@ const getAllProducts = async (req, res) => {
   }
 };
 
-// POST a new product
+// ✅ GET a single product by ID
+const getProductById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const product = await Product.findById(id);
+
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    res.json(product);
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to fetch product' });
+  }
+};
+
+// ✅ POST a new product
 const createProduct = async (req, res) => {
+  const {
+    name,
+    price,
+    description,
+    category,
+    stock,
+    brand,
+    image,
+  } = req.body;
+
   const product = new Product({
-    name: req.body.name,
-    price: req.body.price,
-    description: req.body.description,
-    category: req.body.category,
-    stock: req.body.stock,
+    name,
+    price,
+    description,
+    category,
+    stock,
+    brand,
+    image,
   });
 
   try {
@@ -28,4 +56,60 @@ const createProduct = async (req, res) => {
   }
 };
 
-module.exports = { getAllProducts, createProduct };
+// ✅ UPDATE an existing product
+const updateProduct = async (req, res) => {
+  const { id } = req.params;
+  const {
+    name,
+    price,
+    description,
+    category,
+    stock,
+    brand,
+    image,
+  } = req.body;
+
+  try {
+    const updatedProduct = await Product.findByIdAndUpdate(
+      id,
+      { name, price, description, category, stock, brand, image },
+      { new: true }
+    );
+
+    if (!updatedProduct) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    res.json({
+      message: 'Product updated successfully',
+      product: updatedProduct,
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to update product' });
+  }
+};
+
+// ✅ DELETE a product by ID
+const deleteProduct = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const product = await Product.findByIdAndDelete(id);
+
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    res.json({ message: 'Product deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to delete product' });
+  }
+};
+
+module.exports = {
+  getAllProducts,
+  createProduct,
+  getProductById,
+  updateProduct,
+  deleteProduct
+};
