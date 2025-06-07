@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const Product = require('../models/product');
+
 const {
   getAllProducts,
   createProduct,
@@ -25,7 +27,7 @@ router.put('/:id', authMiddleware, updateProduct);
 // ✅ DELETE a product by ID (protected)
 router.delete('/:id', authMiddleware, deleteProduct);
 
-// 🧪 Category/subcategory mock route — keep last
+// 🧪 Mock route: GET products by category and subcategory
 router.get('/:category/:subcategory', (req, res) => {
   const products = {
     women: {
@@ -43,16 +45,11 @@ router.get('/:category/:subcategory', (req, res) => {
   const category = req.params.category.toLowerCase();
   const subcategory = req.params.subcategory.toLowerCase();
 
-  if (!products[category]) {
-    return res.status(404).json({ message: 'Category not found' });
+  if (products[category] && products[category][subcategory]) {
+    res.json(products[category][subcategory]);
+  } else {
+    res.status(404).json({ message: 'No products found for this category/subcategory.' });
   }
-
-  const subProducts = products[category][subcategory];
-  if (!subProducts) {
-    return res.status(404).json({ message: 'Subcategory not found' });
-  }
-
-  res.json(subProducts);
 });
 
 module.exports = router;

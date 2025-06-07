@@ -35,6 +35,5 @@ const productSchema = new mongoose.Schema({
   timestamps: true // Automatically adds createdAt and updatedAt
 });
 
-const Product = mongoose.model('Product', productSchema);
-
-module.exports = Product;
+// ✅ Fix OverwriteModelError
+module.exports = mongoose.models.Product || mongoose.model('Product', productSchema);
